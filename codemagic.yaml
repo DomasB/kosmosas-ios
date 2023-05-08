@@ -17,7 +17,7 @@ workflows:
       vars:
         APP_ID: 6448805235
       flutter: stable
-      xcode: '13.4.1'
+      # xcode: '13.4.1'
     scripts:
       - name: Set up code signing settings on Xcode project
         script: | 
@@ -31,7 +31,7 @@ workflows:
       - name: Flutter build ipa
         script: | 
           BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1))
-          flutter build ipa --release \
+          flutter build ipa --release --verbose \
             --build-name=1.0.$BUILD_NUMBER \
             --build-number=$BUILD_NUMBER
     artifacts:
