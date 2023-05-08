@@ -1,6 +1,15 @@
 workflows:
   ios-workflow:
-    name: iOS Workflow 
+    name: iOS Workflow
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+        beta_groups:
+          - Beta Testers
+
     environment:
       ios_signing:
         distribution_type: app_store # or: ad_hoc | development | enterprise
