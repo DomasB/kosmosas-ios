@@ -8,12 +8,16 @@ workflows:
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         beta_groups:
-          - Beta Testers
+          - Testers
 
     environment:
       ios_signing:
         distribution_type: app_store # or: ad_hoc | development | enterprise
         bundle_identifier: lt.pro3D.kosmosas
+      vars:
+        APP_ID: 6448805235
+      flutter: stable
+      xcode: '13.4.1'
     scripts:
       - name: Set up code signing settings on Xcode project
         script: | 
