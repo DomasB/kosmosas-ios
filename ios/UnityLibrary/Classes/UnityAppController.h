@@ -62,8 +62,7 @@ __attribute__ ((visibility("default")))
 
 @property (nonatomic, retain) id                            renderDelegate;
 @property (nonatomic, copy)                                 void (^quitHandler)(void);
-@property (nonatomic, copy)                                 void(^unitySceneLoadedHandler)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);
-@property (nonatomic, copy)                                 void(^unityMessageHandler)(const char* message);
+
 @end
 
 // accessing app controller

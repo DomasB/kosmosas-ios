@@ -543,24 +543,10 @@ extern "C" void UnityCleanupTrampoline()
     }
 }
 
-// - (void)application:(UIApplication*)application handleEventsForBackgroundURLSession:(nonnull NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
-// {
-//     NSDictionary* arg = @{identifier: completionHandler};
-//     AppController_SendNotificationWithArg(kUnityHandleEventsForBackgroundURLSession, arg);
-// }
-
-extern "C" void OnUnityMessage(const char* message)
+- (void)application:(UIApplication*)application handleEventsForBackgroundURLSession:(nonnull NSString *)identifier completionHandler:(nonnull void (^)())completionHandler
 {
-    if (GetAppController().unityMessageHandler) {
-        GetAppController().unityMessageHandler(message);
-    }
-}
-
-extern "C" void OnUnitySceneLoaded(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid)
-{
-    if (GetAppController().unitySceneLoadedHandler) {
-        GetAppController().unitySceneLoadedHandler(name, buildIndex, isLoaded, IsValid);
-    }
+    NSDictionary* arg = @{identifier: completionHandler};
+    AppController_SendNotificationWithArg(kUnityHandleEventsForBackgroundURLSession, arg);
 }
 
 @end
