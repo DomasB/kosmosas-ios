@@ -31,11 +31,9 @@ workflows:
       - name: Install pods
         script: | 
           find . -name "Podfile" -execdir pod install \;
-      - name: Set buikd number
-        script: |
-          BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1))
       - name: Flutter build ipa
         script: | 
+          BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1))
           flutter build ipa --release --verbose \
             --export-options-plist=/Users/builder/export_options.plist \
             --build-name=1.0.$BUILD_NUMBER \
