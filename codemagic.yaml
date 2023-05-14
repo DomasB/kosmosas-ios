@@ -19,7 +19,6 @@ workflows:
       vars:
         APP_ID: 6448805235
       flutter: stable
-      xcode: '13.4.1'
       groups:
         - ios_credentials
       vars:
