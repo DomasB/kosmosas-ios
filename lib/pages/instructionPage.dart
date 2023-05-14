@@ -65,7 +65,7 @@ class InstructionPageState extends State<InstructionPage> {
                               itemIndex < 2
                                   ? Image(
                                       image: AssetImage(
-                                          'assets/images/instructions/${itemIndex + 1}_${EasyLocalization.of(context).locale.toString().split("_")[0]}.jpg'),
+                                          'assets/images/instructions/${itemIndex + 1}_${EasyLocalization.of(context)?.locale.toString().split("_")[0]}.jpg'),
                                       height:
                                           MediaQuery.of(context).size.height /
                                               2)

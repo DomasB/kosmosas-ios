@@ -4,7 +4,7 @@ class PlayingControls extends StatelessWidget {
   final bool isPlaying;
   final Function() onPlay;
 
-  const PlayingControls({this.isPlaying, this.onPlay});
+  const PlayingControls({required this.isPlaying, required this.onPlay});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:panorama/panorama.dart';
 
@@ -7,7 +5,7 @@ import '../components/menuButton.dart';
 import '../helpers/objectProvider.dart';
 
 class PanoramaPage extends StatefulWidget {
-  const PanoramaPage({this.target});
+  const PanoramaPage({required this.target});
   final ObjectTarget target;
 
   @override
@@ -15,7 +13,7 @@ class PanoramaPage extends StatefulWidget {
 }
 
 class PanoramaPageState extends State<PanoramaPage> {
-  int currentStep;
+  int currentStep = 1;
   @override
   void initState() {
     super.initState();
@@ -25,8 +23,6 @@ class PanoramaPageState extends State<PanoramaPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    var image = Image.asset(
-        'assets/images/panoramas/panorama_${widget.target.key}_$currentStep.webp');
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(

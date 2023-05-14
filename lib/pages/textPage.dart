@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:Kosmosas/helpers/objectProvider.dart';
 
 class TextPage extends StatelessWidget {
-  TextPage({this.target});
+  TextPage({required this.target});
   final ScrollController _scrollController =
       ScrollController(keepScrollOffset: false);
   final ObjectTarget target;

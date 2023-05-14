@@ -5,14 +5,17 @@ class PositionSeekWidget extends StatefulWidget {
   final Duration duration;
   final Function(Duration) seekTo;
 
-  const PositionSeekWidget({this.currentPosition, this.duration, this.seekTo});
+  const PositionSeekWidget(
+      {required this.currentPosition,
+      required this.duration,
+      required this.seekTo});
 
   @override
   _PositionSeekWidgetState createState() => _PositionSeekWidgetState();
 }
 
 class _PositionSeekWidgetState extends State<PositionSeekWidget> {
-  Duration _visibleValue;
+  late Duration _visibleValue;
   bool listenOnlyUserInterraction = false;
   double get percent => widget.duration.inMilliseconds == 0
       ? 0

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class KMenuButton extends StatelessWidget {
-  const KMenuButton({this.onPressed, this.text = ''});
+  const KMenuButton({required this.onPressed, this.text = ''});
 
   final GestureTapCallback onPressed;
   final String text;

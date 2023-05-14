@@ -8,7 +8,7 @@ import 'targetPage.dart';
 enum UnityMode { Scan, Model, Video }
 
 class UnityPage extends StatefulWidget {
-  UnityPage({this.object, this.mode, this.targetName = ''});
+  UnityPage({required this.object, required this.mode, this.targetName = ''});
 
   ObjectOfInterest object;
   UnityMode mode;
@@ -20,11 +20,12 @@ class UnityPage extends StatefulWidget {
 }
 
 class UnityPageState extends State<UnityPage> with RouteAware {
-  UnityPageState({this.object, this.mode, this.targetName});
+  UnityPageState(
+      {required this.object, required this.mode, required this.targetName});
   ObjectOfInterest object;
   UnityMode mode;
   String targetName;
-  UnityWidgetController _unityWidgetController;
+  late UnityWidgetController _unityWidgetController;
 
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -84,7 +85,10 @@ class UnityPageState extends State<UnityPage> with RouteAware {
       return;
     }
     var target = object.targets.firstWhere((o) => o.key == message);
-    if (target != null && ModalRoute.of(context).isCurrent) {
+    // ignore: unnecessary_null_comparison
+    if (target != null &&
+        ModalRoute.of(context) != null &&
+        ModalRoute.of(context)!.isCurrent) {
       Navigator.push(
           context,
           MaterialPageRoute(

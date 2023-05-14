@@ -10,7 +10,7 @@ import 'playerPage.dart';
 import 'panorama.dart';
 
 class TargetPage extends StatelessWidget {
-  TargetPage({this.object, this.objectTarget});
+  TargetPage({required this.object, required this.objectTarget});
   final ObjectOfInterest object;
   final ObjectTarget objectTarget;
 
@@ -61,9 +61,10 @@ class TargetPage extends StatelessWidget {
                               builder: (context) => PlayerPage(
                                     target: this.objectTarget,
                                     language: EasyLocalization.of(context)
-                                        .locale
-                                        .toString()
-                                        .split("_")[0],
+                                            ?.locale
+                                            .toString()
+                                            .split("_")[0] ??
+                                        '',
                                   )))
                     }
                   else if (o == DataType.video)

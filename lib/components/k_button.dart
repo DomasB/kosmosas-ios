@@ -4,7 +4,7 @@ enum KButtonVariation { top, bottom }
 
 class KButtonOutlined extends StatelessWidget {
   const KButtonOutlined(
-      {this.onPressed,
+      {required this.onPressed,
       this.text = '',
       this.variation = KButtonVariation.top,
       this.icon = null});
@@ -12,7 +12,7 @@ class KButtonOutlined extends StatelessWidget {
   final GestureTapCallback onPressed;
   final String text;
   final KButtonVariation variation;
-  final Icon icon;
+  final Icon? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class KButtonOutlined extends StatelessWidget {
               image: AssetImage(variation == KButtonVariation.top
                   ? "assets/images/button1.png"
                   : "assets/images/button2.png")),
-          this.icon != null ? this.icon : SizedBox(),
+          this.icon != null ? this.icon! : SizedBox(),
           Text(text,
               textScaleFactor: 2,
               style: TextStyle(

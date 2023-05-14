@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class KBackground extends StatelessWidget {
   const KBackground(
-      {this.child,
+      {required this.child,
       this.withLogo = false,
       this.fullHeight = false,
       this.horizontalPadding = 0});

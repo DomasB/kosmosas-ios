@@ -4,12 +4,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 
 import '../helpers/objectProvider.dart';
 
 class TargetCard extends StatefulWidget {
-  TargetCard({this.object});
+  TargetCard({required this.object});
   final ObjectOfInterest object;
 
   @override
@@ -19,11 +18,11 @@ class TargetCard extends StatefulWidget {
 }
 
 class TargetCardState extends State<TargetCard> {
-  TargetCardState({this.object});
+  TargetCardState({required this.object});
 
   final CarouselController _controller = CarouselController();
   final ObjectOfInterest object;
-  Position _currentPosition;
+  late Position _currentPosition;
   int _current = 0;
   bool hintMode = false;
 

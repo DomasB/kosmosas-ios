@@ -7,7 +7,7 @@ import '../components/player_controls.dart';
 import '../components/position_seek_widget.dart';
 
 class PlayerPage extends StatefulWidget {
-  const PlayerPage({this.target, this.language});
+  const PlayerPage({required this.target, required this.language});
 
   final ObjectTarget target;
   final String language;
@@ -18,9 +18,9 @@ class PlayerPage extends StatefulWidget {
 }
 
 class _PlayerState extends State<PlayerPage> {
-  _PlayerState({this.target, this.language});
+  _PlayerState({required this.target, required this.language});
 
-  AssetsAudioPlayer _audioPlayer;
+  late AssetsAudioPlayer _audioPlayer;
   final ObjectTarget target;
   final String language;
 
@@ -86,6 +86,7 @@ class _PlayerState extends State<PlayerPage> {
                           ),
                           _audioPlayer.builderRealtimePlayingInfos(
                               builder: (context, RealtimePlayingInfos infos) {
+                            // ignore: unnecessary_null_comparison
                             if (infos == null) {
                               return const SizedBox();
                             }

@@ -5,7 +5,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import '../helpers/objectProvider.dart';
 
 class GalleryPage extends StatelessWidget {
-  const GalleryPage({this.target});
+  const GalleryPage({required this.target});
 
   final ObjectTarget target;
 

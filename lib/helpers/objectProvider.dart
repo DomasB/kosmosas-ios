@@ -7,11 +7,12 @@ class ObjectOfInterest {
   String key;
   String title;
   LatLng coordinates;
-  List<ObjectTarget> targets;
-  ObjectOfInterest(String key, LatLng coordinates, List<ObjectTarget> targets) {
-    this.key = key;
-    this.title = key.tr();
-    this.coordinates = coordinates;
+  late List<ObjectTarget> targets;
+
+  ObjectOfInterest(String key, LatLng coordinates, List<ObjectTarget> targets)
+      : key = key,
+        title = key.tr(),
+        coordinates = coordinates {
     this.targets = targets.map((t) => mapObjectTarget(t, key)).toList();
   }
 }
@@ -164,14 +165,13 @@ class ObjectTarget {
   int numberOfImages;
   String coverImage;
   ObjectTarget(List<DataType> dataTypes,
-      {String key = null,
+      {String key = '',
       int numberOfPanoramas = 1,
       int numberOfImages = 1,
-      String coverImage = ""}) {
-    this.dataTypes = dataTypes;
-    this.key = key;
-    this.numberOfPanoramas = numberOfPanoramas;
-    this.numberOfImages = numberOfImages;
-    this.coverImage = coverImage;
-  }
+      String coverImage = ""})
+      : dataTypes = dataTypes,
+        key = key,
+        numberOfPanoramas = numberOfPanoramas,
+        numberOfImages = numberOfImages,
+        coverImage = coverImage;
 }
