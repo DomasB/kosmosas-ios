@@ -33,11 +33,10 @@ workflows:
           find . -name "Podfile" -execdir pod install \;
       - name: Flutter build ipa
         script: | 
-          BUILD_NUMBER=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1))
-          flutter build ipa --release --verbose \
+          flutter build ipa --release \
             --export-options-plist=/Users/builder/export_options.plist \
-            --build-name=1.0.$BUILD_NUMBER \
-            --build-number=$BUILD_NUMBER
+            --build-name=1.0.$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1)) \
+            --build-number=$(($(app-store-connect get-latest-app-store-build-number "$APP_ID") + 1))
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
