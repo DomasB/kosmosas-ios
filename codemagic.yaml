@@ -3,10 +3,9 @@ workflows:
     name: iOS Workflow
     publishing:
       app_store_connect:
-        auth: integration 
-        # api_key: $APP_STORE_CONNECT_PRIVATE_KEY
-        # key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
-        # issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         beta_groups:
           - Testers
@@ -20,11 +19,15 @@ workflows:
         APP_ID: 6448805235
       flutter: stable
       xcode: '13.4.1'
+      cocoapods: default
       groups:
         - ios_credentials
       vars:
         BUNDLE_ID: 'lt.pro3D.kosmosas'
     scripts:
+      - name: Install CocoaPods dependencies
+        script: | 
+          pod install
       - name: Set up code signing settings on Xcode project
         script: | 
           xcode-project use-profiles
