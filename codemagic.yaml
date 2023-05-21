@@ -37,8 +37,8 @@ workflows:
         script: | 
           flutter build ipa --release \
             --export-options-plist=/Users/builder/export_options.plist \
-            --build-name=1.0.2 \
-            --build-number=2
+            --build-name=1.0.3 \
+            --build-number=3
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log

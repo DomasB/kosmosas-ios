@@ -56,5 +56,7 @@
 	<string>This app needs access to location to calculate distances to objects.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Phone camera is needed to scan targets.</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<string>YES</string>
 </dict>
 </plist>
