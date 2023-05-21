@@ -14,9 +14,37 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		B0C2C18E2A1ABA230086512D /* VuforiaEngine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0C2C18D2A1ABA230086512D /* VuforiaEngine.framework */; };
+		B0C2C18F2A1ABA230086512D /* VuforiaEngine.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B0C2C18D2A1ABA230086512D /* VuforiaEngine.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B0C2C1922A1ABA4A0086512D /* UnityDriver.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0C2C1912A1ABA4A0086512D /* UnityDriver.framework */; };
+		B0C2C1932A1ABA4A0086512D /* UnityDriver.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B0C2C1912A1ABA4A0086512D /* UnityDriver.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FF96F5962844CAE300BAC5A4 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */; };
 		FF96F5972844CAE300BAC5A4 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B0C2C19A2A1ABAD90086512D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0C2C1942A1ABAD90086512D /* Unity-iPhone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1D6058910D05DD3D006BFB54;
+			remoteInfo = "Unity-iPhone";
+		};
+		B0C2C19C2A1ABAD90086512D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0C2C1942A1ABAD90086512D /* Unity-iPhone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5623C57317FDCB0800090B9E;
+			remoteInfo = "Unity-iPhone Tests";
+		};
+		B0C2C19E2A1ABAD90086512D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B0C2C1942A1ABAD90086512D /* Unity-iPhone.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9D25AB9D213FB47800354C27;
+			remoteInfo = UnityFramework;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		FF96F5982844CAE300BAC5A4 /* Embed Frameworks */ = {
@@ -26,6 +54,8 @@
 			dstSubfolderSpec = 10;
 			files = (
 				FF96F5972844CAE300BAC5A4 /* UnityFramework.framework in Embed Frameworks */,
+				B0C2C1932A1ABA4A0086512D /* UnityDriver.framework in Embed Frameworks */,
+				B0C2C18F2A1ABA230086512D /* VuforiaEngine.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,6 +79,11 @@
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0C9BE7FB0B65D08CB18B1B1 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
+		B0C2C18A2A1AB9D00086512D /* VuforiaEngine */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = VuforiaEngine; path = Runner/Frameworks/VuforiaEngine.framework/VuforiaEngine; sourceTree = "<group>"; };
+		B0C2C18D2A1ABA230086512D /* VuforiaEngine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VuforiaEngine.framework; path = Runner/Frameworks/VuforiaEngine.framework; sourceTree = "<group>"; };
+		B0C2C1902A1ABA370086512D /* Runner */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Runner; sourceTree = "<group>"; };
+		B0C2C1912A1ABA4A0086512D /* UnityDriver.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UnityDriver.framework; path = Runner/Frameworks/UnityDriver.framework; sourceTree = "<group>"; };
+		B0C2C1942A1ABAD90086512D /* Unity-iPhone.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Unity-iPhone.xcodeproj"; path = "UnityLibrary/Unity-iPhone.xcodeproj"; sourceTree = "<group>"; };
 		C67AD091B94A237CE55DA80D /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -58,7 +93,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0C2C18E2A1ABA230086512D /* VuforiaEngine.framework in Frameworks */,
 				4E471AA3E4C8F3AAF4E74885 /* Pods_Runner.framework in Frameworks */,
+				B0C2C1922A1ABA4A0086512D /* UnityDriver.framework in Frameworks */,
 				FF96F5962844CAE300BAC5A4 /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -69,6 +106,10 @@
 		5EE02D7D424978575F6CE6C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B0C2C1912A1ABA4A0086512D /* UnityDriver.framework */,
+				B0C2C1902A1ABA370086512D /* Runner */,
+				B0C2C18D2A1ABA230086512D /* VuforiaEngine.framework */,
+				B0C2C18A2A1AB9D00086512D /* VuforiaEngine */,
 				CD6F5C8825C8A42B00F1B679 /* UnityFramework.framework */,
 				C67AD091B94A237CE55DA80D /* Pods_Runner.framework */,
 			);
@@ -89,6 +130,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				B0C2C1942A1ABAD90086512D /* Unity-iPhone.xcodeproj */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,
 				97C146EF1CF9000F007C117D /* Products */,
@@ -118,6 +160,16 @@
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
 			);
 			path = Runner;
+			sourceTree = "<group>";
+		};
+		B0C2C1952A1ABAD90086512D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B0C2C19B2A1ABAD90086512D /* Unity-Target-New.app */,
+				B0C2C19D2A1ABAD90086512D /* Unity-iPhone Tests.xctest */,
+				B0C2C19F2A1ABAD90086512D /* UnityFramework.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		B2179D62E032766F7822129B /* Pods */ = {
@@ -181,12 +233,43 @@
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B0C2C1952A1ABAD90086512D /* Products */;
+					ProjectRef = B0C2C1942A1ABAD90086512D /* Unity-iPhone.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				97C146ED1CF9000F007C117D /* Runner */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		B0C2C19B2A1ABAD90086512D /* Unity-Target-New.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			name = "Unity-Target-New.app";
+			path = kosmosasunity.app;
+			remoteRef = B0C2C19A2A1ABAD90086512D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B0C2C19D2A1ABAD90086512D /* Unity-iPhone Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "Unity-iPhone Tests.xctest";
+			remoteRef = B0C2C19C2A1ABAD90086512D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		B0C2C19F2A1ABAD90086512D /* UnityFramework.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = UnityFramework.framework;
+			remoteRef = B0C2C19E2A1ABAD90086512D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		97C146EC1CF9000F007C117D /* Resources */ = {
@@ -365,6 +448,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/Runner/Frameworks",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -375,6 +459,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/Runner/Frameworks/VuforiaEngine.framework",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = lt.pro3D.kosmosas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -503,6 +588,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/Runner/Frameworks",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -513,6 +599,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/Runner/Frameworks/VuforiaEngine.framework",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = lt.pro3D.kosmosas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -534,6 +621,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/Runner/Frameworks",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -544,6 +632,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Flutter",
+					"$(PROJECT_DIR)/Runner/Frameworks/VuforiaEngine.framework",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = lt.pro3D.kosmosas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
