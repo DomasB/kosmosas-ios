@@ -18,7 +18,7 @@ class ObjectOfInterest {
 }
 
 ObjectTarget mapObjectTarget(ObjectTarget target, String objectKey) {
-  if (target.key == null) {
+  if (target.key == null || target.key!.isEmpty) {
     target.key = objectKey;
   }
   return target;
@@ -159,7 +159,7 @@ class ObjectProvider {
 }
 
 class ObjectTarget {
-  String key;
+  String? key;
   List<DataType> dataTypes;
   int numberOfPanoramas;
   int numberOfImages;

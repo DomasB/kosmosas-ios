@@ -41,12 +41,10 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
-/unity/
 /linux/
 /macos/
 /windows/
 /web/
-/android/
-/android/app
+/android/unityLibrary/build/
 /.gradle/
 .gradle

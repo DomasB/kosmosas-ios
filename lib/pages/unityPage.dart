@@ -31,7 +31,7 @@ class UnityPageState extends State<UnityPage> with RouteAware {
     return WillPopScope(
         onWillPop: () async {
           this.object.targets.forEach((o) {
-            this._unityWidgetController.postMessage(o.key, 'Scan', null);
+            this._unityWidgetController.postMessage(o.key!, 'Scan', "");
           });
           return true;
         },
@@ -49,14 +49,14 @@ class UnityPageState extends State<UnityPage> with RouteAware {
                   this.object.targets.forEach((o) {
                     this
                         ._unityWidgetController
-                        .postMessage(o.key, 'Scan', null);
+                        .postMessage(o.key!, 'Scan', null);
                   });
                 },
                 onUnitySceneLoaded: (scene) {
                   this.object.targets.forEach((o) {
                     this
                         ._unityWidgetController
-                        .postMessage(o.key, 'Scan', null);
+                        .postMessage(o.key!, 'Scan', null);
                   });
                 },
               ),
@@ -68,15 +68,13 @@ class UnityPageState extends State<UnityPage> with RouteAware {
     this._unityWidgetController = controller;
     var mode = this.mode.toString().split('.')[1];
     this.object.targets.forEach((o) {
-      this._unityWidgetController.postMessage(o.key, mode, null);
+      this._unityWidgetController.postMessage(o.key!, mode, "");
     });
     if (this.mode == UnityMode.Video) {
-      this
-          ._unityWidgetController
-          .postMessage(this.targetName, 'ShowVideo', null);
+      this._unityWidgetController.postMessage(this.targetName, 'ShowVideo', "");
     }
     if (this.mode == UnityMode.Model) {
-      this._unityWidgetController.postMessage(this.targetName, 'Show3D', null);
+      this._unityWidgetController.postMessage(this.targetName, 'Show3D', "");
     }
   }
 
@@ -106,13 +104,14 @@ class UnityPageState extends State<UnityPage> with RouteAware {
   @override
   void didPopNext() {
     this.object.targets.forEach((o) {
-      this._unityWidgetController.postMessage(o.key, 'Scan', null);
+      this._unityWidgetController.postMessage(o.key!, 'Scan', null);
     });
   }
 
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
+    this._unityWidgetController.dispose();
     super.dispose();
   }
 }

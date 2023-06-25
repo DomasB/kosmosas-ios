@@ -1,7 +1,6 @@
 import 'package:Kosmosas/components/background.dart';
 import 'package:flutter/material.dart';
 import 'package:Kosmosas/helpers/objectProvider.dart';
-import 'package:Kosmosas/pages/targetPage.dart';
 
 import '../components/targetCard.dart';
 

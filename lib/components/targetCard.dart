@@ -22,146 +22,162 @@ class TargetCardState extends State<TargetCard> {
 
   final CarouselController _controller = CarouselController();
   final ObjectOfInterest object;
-  late Position _currentPosition;
   int _current = 0;
   bool hintMode = false;
 
   @override
   initState() {
-    _getCurrentPosition();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(children: [
-      CarouselSlider.builder(
-        itemCount: object.targets.length,
-        itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) =>
-            Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-              object.targets[itemIndex].coverImage != null
-                  ? Image(
-                      image: hintMode
-                          ? AssetImage(
-                              "assets/images/targets/${object.targets[itemIndex].key}.webp")
-                          : AssetImage(object.targets[itemIndex].coverImage),
-                      height: 300,
+    return FutureBuilder<Position>(
+        future: _getCurrentPosition(),
+        builder: (BuildContext context, AsyncSnapshot<Position> snapshot) {
+          return Container(
+              child: Column(children: [
+            CarouselSlider.builder(
+              itemCount: object.targets.length,
+              itemBuilder:
+                  (BuildContext context, int itemIndex, int pageViewIndex) =>
+                      Container(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                    object.targets[itemIndex].coverImage != null
+                        ? Image(
+                            image: hintMode
+                                ? AssetImage(
+                                    "assets/images/targets/${object.targets[itemIndex].key}.webp")
+                                : AssetImage(
+                                    object.targets[itemIndex].coverImage),
+                            height: 300,
+                          )
+                        : SizedBox(),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 2.0,
+                    ),
+                    Text(
+                        hintMode
+                            ? "hint".tr() +
+                                ": " +
+                                "${object.targets[itemIndex].key}_hint".tr()
+                            : "${object.targets[itemIndex].key}_promo".tr(),
+                        textScaleFactor: 1.5,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal)),
+                    Divider(
+                      color: Colors.white,
+                      thickness: 2.0,
                     )
-                  : SizedBox(),
-              Divider(
-                color: Colors.white,
-                thickness: 2.0,
-              ),
-              Text(
-                  hintMode
-                      ? "hint".tr() +
-                          ": " +
-                          "${object.targets[itemIndex].key}_hint".tr()
-                      : "${object.targets[itemIndex].key}_promo".tr(),
-                  textScaleFactor: 1.5,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.normal)),
-              Divider(
-                color: Colors.white,
-                thickness: 2.0,
-              )
-            ])),
-        options: CarouselOptions(
-            height: 500,
-            enableInfiniteScroll: false,
-            viewportFraction: 1.0,
-            onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-              });
-            }),
-      ),
-      object.targets.length > 1
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: object.targets.asMap().entries.map((entry) {
-                return GestureDetector(
-                  onTap: () => _controller.animateToPage(entry.key),
-                  child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    margin:
-                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white
-                            .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                  ),
-                );
-              }).toList())
-          : SizedBox(),
-      SizedBox(width: 0, height: 20),
-      OutlinedButton(
-          onPressed: () async {
-            var uri = Uri.parse(
-                "google.navigation:q=${object.coordinates.latitude},${object.coordinates.longitude}&directionsmode=driving");
-            try {
-              await launchUrl(uri);
-            } catch (e) {
-              print(e.toString());
-            }
-          },
-          style: OutlinedButton.styleFrom(
-            minimumSize: Size(double.infinity, 50),
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-            side: BorderSide(width: 1.0, color: Colors.white),
-          ),
-          child: Text("goToObject".tr(),
-              textScaleFactor: 1.5,
-              style: TextStyle(
-                  color: Colors.white, fontWeight: FontWeight.normal))),
-      SizedBox(height: 20),
-      Stack(alignment: Alignment.center, fit: StackFit.passthrough, children: [
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          ElevatedButton.icon(
-              icon: Icon(Icons.camera_alt, size: 24),
-              label: Text("scan".tr()),
-              style: ButtonStyle(
-                  minimumSize: MaterialStateProperty.all(Size(100, 50)),
-                  backgroundColor: isClose()
-                      ? MaterialStateProperty.all(Colors.blue)
-                      : MaterialStateProperty.all(Colors.grey)),
-              onPressed: () => {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => UnityPage(
-                                object: object, mode: UnityMode.Scan)))
+                  ])),
+              options: CarouselOptions(
+                  height: 500,
+                  enableInfiniteScroll: false,
+                  viewportFraction: 1.0,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      _current = index;
+                    });
                   }),
-          Text(getDistance(),
-              textScaleFactor: 1.3,
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.normal))
-        ]),
-        OutlinedButton(
-            child: Text(hintMode ? "description".tr() : "whatToScan".tr(),
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.normal)),
-            style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(100, 50)),
-                backgroundColor: MaterialStateProperty.all(Colors.blue)),
-            onPressed: () => {setState(() => hintMode = !hintMode)}),
-      ]),
-      SizedBox(width: 0, height: 20)
-    ]));
+            ),
+            object.targets.length > 1
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: object.targets.asMap().entries.map((entry) {
+                      return GestureDetector(
+                        onTap: () => _controller.animateToPage(entry.key),
+                        child: Container(
+                          width: 12.0,
+                          height: 12.0,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 4.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withOpacity(
+                                  _current == entry.key ? 0.9 : 0.4)),
+                        ),
+                      );
+                    }).toList())
+                : SizedBox(),
+            SizedBox(width: 0, height: 20),
+            OutlinedButton(
+                onPressed: () async {
+                  var uri = Uri.parse(
+                      "google.navigation:q=${object.coordinates.latitude},${object.coordinates.longitude}&directionsmode=driving");
+                  try {
+                    await launchUrl(uri);
+                  } catch (e) {
+                    print(e.toString());
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  minimumSize: Size(double.infinity, 50),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  side: BorderSide(width: 1.0, color: Colors.white),
+                ),
+                child: Text("goToObject".tr(),
+                    textScaleFactor: 1.5,
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.normal))),
+            SizedBox(height: 20),
+            Stack(
+                alignment: Alignment.center,
+                fit: StackFit.passthrough,
+                children: [
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton.icon(
+                            icon: Icon(Icons.camera_alt, size: 24),
+                            label: Text("scan".tr()),
+                            style: ButtonStyle(
+                                minimumSize:
+                                    MaterialStateProperty.all(Size(100, 50)),
+                                backgroundColor: isClose(snapshot.data)
+                                    ? MaterialStateProperty.all(Colors.blue)
+                                    : MaterialStateProperty.all(Colors.grey)),
+                            onPressed: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UnityPage(
+                                              object: object,
+                                              mode: UnityMode.Scan)))
+                                }),
+                        Text(getDistance(snapshot.data),
+                            textScaleFactor: 1.3,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal))
+                      ]),
+                  OutlinedButton(
+                      child: Text(
+                          hintMode ? "description".tr() : "whatToScan".tr(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.normal)),
+                      style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all(Size(100, 50)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.blue)),
+                      onPressed: () => {setState(() => hintMode = !hintMode)}),
+                ]),
+            SizedBox(width: 0, height: 20)
+          ]));
+        });
   }
 
-  String getDistance() {
-    return _currentPosition != null
+  String getDistance(Position? currentPosition) {
+    return currentPosition != null
         ? (Geolocator.distanceBetween(
                         object.coordinates.latitude,
                         object.coordinates.longitude,
-                        _currentPosition.latitude,
-                        _currentPosition.longitude) /
+                        currentPosition.latitude,
+                        currentPosition.longitude) /
                     1000)
                 .round()
                 .toString() +
@@ -169,15 +185,15 @@ class TargetCardState extends State<TargetCard> {
         : "- km";
   }
 
-  bool isClose() {
-    if (_currentPosition == null) {
+  bool isClose(Position? currentPosition) {
+    if (currentPosition == null) {
       return false;
     }
     return Geolocator.distanceBetween(
             object.coordinates.latitude,
             object.coordinates.longitude,
-            _currentPosition.latitude,
-            _currentPosition.longitude) <
+            currentPosition.latitude,
+            currentPosition.longitude) <
         500;
   }
 
@@ -208,15 +224,11 @@ class TargetCardState extends State<TargetCard> {
     return true;
   }
 
-  Future<void> _getCurrentPosition() async {
+  Future<Position> _getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => _currentPosition = position);
-    }).catchError((e) {
-      debugPrint(e);
-    });
+    if (!hasPermission) return throw new Exception("Location is required");
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
   Future<void> _showSimpleDialog() async {

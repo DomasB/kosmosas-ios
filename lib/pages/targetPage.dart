@@ -75,7 +75,7 @@ class TargetPage extends StatelessWidget {
                               builder: (context) => UnityPage(
                                     object: this.object,
                                     mode: UnityMode.Video,
-                                    targetName: this.objectTarget.key,
+                                    targetName: this.objectTarget.key!,
                                   )))
                     }
                   else if (o == DataType.model)
@@ -86,7 +86,7 @@ class TargetPage extends StatelessWidget {
                               builder: (context) => UnityPage(
                                     object: this.object,
                                     mode: UnityMode.Model,
-                                    targetName: this.objectTarget.key,
+                                    targetName: this.objectTarget.key!,
                                   )))
                     }
                 },
