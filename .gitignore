@@ -45,7 +45,7 @@ app.*.map.json
 /macos/
 /windows/
 /web/
-/android/
+android/
 /unity/
 /.gradle/
 .gradle
