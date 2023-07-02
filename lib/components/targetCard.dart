@@ -106,8 +106,11 @@ class TargetCardState extends State<TargetCard> {
             SizedBox(width: 0, height: 20),
             OutlinedButton(
                 onPressed: () async {
-                  var uri = Uri.parse(
-                      "google.navigation:q=${object.coordinates.latitude},${object.coordinates.longitude}&directionsmode=driving");
+                  var params = {
+                    'll':
+                        '${object.coordinates.latitude},${object.coordinates.longitude}'
+                  };
+                  var uri = Uri.https('maps.apple.com', '/', params);
                   try {
                     await launchUrl(uri);
                   } catch (e) {
