@@ -108,7 +108,8 @@ class TargetCardState extends State<TargetCard> {
                 onPressed: () async {
                   var params = {
                     'll':
-                        '${object.coordinates.latitude},${object.coordinates.longitude}'
+                        '${object.coordinates.latitude},${object.coordinates.longitude}',
+                    'q': object.title.split(' ').join('+')
                   };
                   var uri = Uri.https('maps.apple.com', '/', params);
                   try {
