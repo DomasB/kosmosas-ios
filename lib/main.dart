@@ -31,6 +31,9 @@ class KosmosasApp extends StatelessWidget {
         locale: context.locale,
         home: Scaffold(
           key: _scaffoldKey,
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+          ),
           body: SafeArea(
               bottom: false,
               child: Container(
@@ -70,13 +73,25 @@ class KosmosasApp extends StatelessWidget {
 
   Future<void> setLtAndNavigate(BuildContext context) async {
     await context.setLocale(Locale('lt', 'LT'));
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MainMenu()));
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.push(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (context, _, __) => MainMenu(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero));
+    });
   }
 
   Future<void> setEnAndNavigate(BuildContext context) async {
     await context.setLocale(Locale('en', 'US'));
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MainMenu()));
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.push(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (context, _, __) => MainMenu(),
+              transitionDuration: Duration.zero,
+              reverseTransitionDuration: Duration.zero));
+    });
   }
 }

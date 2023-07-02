@@ -124,48 +124,38 @@ class TargetCardState extends State<TargetCard> {
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.normal))),
             SizedBox(height: 20),
-            Stack(
-                alignment: Alignment.center,
-                fit: StackFit.passthrough,
-                children: [
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ElevatedButton.icon(
-                            icon: Icon(Icons.camera_alt, size: 24),
-                            label: Text("scan".tr()),
-                            style: ButtonStyle(
-                                minimumSize:
-                                    MaterialStateProperty.all(Size(100, 50)),
-                                backgroundColor: isClose(snapshot.data)
-                                    ? MaterialStateProperty.all(Colors.blue)
-                                    : MaterialStateProperty.all(Colors.grey)),
-                            onPressed: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => UnityPage(
-                                              object: object,
-                                              mode: UnityMode.Scan)))
-                                }),
-                        Text(getDistance(snapshot.data),
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.normal))
-                      ]),
-                  OutlinedButton(
-                      child: Text(
-                          hintMode ? "description".tr() : "whatToScan".tr(),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal)),
-                      style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(Size(100, 50)),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.blue)),
-                      onPressed: () => {setState(() => hintMode = !hintMode)}),
-                ]),
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              ElevatedButton.icon(
+                  icon: Icon(Icons.camera_alt, size: 24),
+                  label: Text("scan".tr()),
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(Size(100, 50)),
+                      backgroundColor: isClose(snapshot.data)
+                          ? MaterialStateProperty.all(Colors.blue)
+                          : MaterialStateProperty.all(Colors.grey)),
+                  onPressed: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UnityPage(
+                                    object: object, mode: UnityMode.Scan)))
+                      }),
+              OutlinedButton(
+                  child: Text(hintMode ? "description".tr() : "whatToScan".tr(),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.normal)),
+                  style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(Size(100, 50)),
+                      backgroundColor: MaterialStateProperty.all(Colors.blue)),
+                  onPressed: () => {setState(() => hintMode = !hintMode)}),
+              SizedBox(
+                  width: (MediaQuery.of(context).size.width - 40) * 0.3,
+                  child: Text(getDistance(snapshot.data),
+                      textScaleFactor: 1.3,
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.normal)))
+            ]),
             SizedBox(width: 0, height: 20)
           ]));
         });

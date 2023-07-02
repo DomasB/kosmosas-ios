@@ -25,10 +25,10 @@ class KButtonOutlined extends StatelessWidget {
                   : "assets/images/button2.png")),
           this.icon != null ? this.icon! : SizedBox(),
           Text(text,
-              textScaleFactor: 2,
               style: TextStyle(
+                  fontSize: MediaQuery.of(context).size.width * 0.06,
                   color: Colors.white,
-                  height: variation == KButtonVariation.top ? 2.7 : 1)),
+                  height: variation == KButtonVariation.top ? 2 : 1)),
         ]));
   }
 }
