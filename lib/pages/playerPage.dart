@@ -32,7 +32,7 @@ class _PlayerState extends State<PlayerPage> {
     await _audioPlayer.open(
         Audio(language == "lt"
             ? "assets/audio/${language}-${target.key}.mp3"
-            : "assets/audio/${language}_${target.key}.ogg"),
+            : "assets/audio/${language}_${target.key}.mp3"),
         showNotification: false,
         autoStart: false);
     _audioPlayer.play();
