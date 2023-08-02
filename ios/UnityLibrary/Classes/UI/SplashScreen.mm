@@ -54,7 +54,7 @@ static SplashScreenController*  _controller  = nil;
 - (void)updateOrientation:(ScreenOrientation)orient withSupportedOrientations:(const OrientationMask&)supportedOrientations
 {
     CGFloat scale = UnityScreenScaleFactor([UIScreen mainScreen]);
-    UnityReportResizeView((unsigned)(self.bounds.size.width * scale), (unsigned)(self.bounds.size.height * scale), orient);
+    UnityReportResizeView(self.bounds.size.width * scale, self.bounds.size.height * scale, orient);
     ReportSafeAreaChangeForView(self);
 
     // for iOS only xib/storyboard are supported, for tvOS (launch images are supported) no orientation takes place at all
@@ -195,7 +195,7 @@ void ShowSplashScreen(UIWindow* window)
     NSString* launchScreen = [[NSBundle mainBundle].infoDictionary[@"UILaunchStoryboardName"] stringByDeletingPathExtension];
 #if PLATFORM_IOS
     // since launch images are no longer supported on ios we MUST have UILaunchStoryboardName filled
-    assert(launchScreen != nil && "UILaunchStoryboardName key is missing from info.plist");
+    assert(launchScreen != nil && @"UILaunchStoryboardName key is missing from info.plist");
 #endif
 
     const bool hasStoryboard = launchScreen != nil && [[NSBundle mainBundle] pathForResource: launchScreen ofType: @"storyboardc"] != nil;

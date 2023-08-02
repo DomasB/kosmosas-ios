@@ -13,35 +13,36 @@
 
 
 // 0x00000001 System.String UnityEngineInternal.WebRequestUtils::RedirectTo(System.String,System.String)
-extern void WebRequestUtils_RedirectTo_m63855E63B6B6EAFD4BCE65395BB744AAF5BD6AB4 (void);
+extern void WebRequestUtils_RedirectTo_m302A7CAA44374907C165F4553CEA2309D689B189 (void);
 // 0x00000002 System.Void UnityEngineInternal.WebRequestUtils::.cctor()
-extern void WebRequestUtils__cctor_m31ADEB75E00368144C8F223647D81A3B5ADD3D69 (void);
+extern void WebRequestUtils__cctor_mCE956748A8F3B1FA48893A7D263C466082815EEB (void);
 // 0x00000003 System.Boolean UnityEngine.Networking.CertificateHandler::ValidateCertificate(System.Byte[])
-extern void CertificateHandler_ValidateCertificate_m81E194684391CA512FFC7C3A9172B56D6A1E2752 (void);
+extern void CertificateHandler_ValidateCertificate_mE76D686A7A10A86799FBF1F107EF3544D4A9D815 (void);
 // 0x00000004 System.Boolean UnityEngine.Networking.CertificateHandler::ValidateCertificateNative(System.Byte[])
-extern void CertificateHandler_ValidateCertificateNative_m73467B32D9B40F6897951F71F80CDDA92F5FD785 (void);
+extern void CertificateHandler_ValidateCertificateNative_m7AA7136975CEB1635B201B08BB9B04059E7D0D16 (void);
 // 0x00000005 System.Void UnityEngine.Networking.DownloadHandler::ReceiveContentLengthHeader(System.UInt64)
-extern void DownloadHandler_ReceiveContentLengthHeader_m545073C4FB5AB9BB6640D24FC2F32070E5FE3F17 (void);
+extern void DownloadHandler_ReceiveContentLengthHeader_mD3B607EDDF946896B9877C91DE1EDD6C39B16CF3 (void);
 // 0x00000006 System.Void UnityEngine.Networking.DownloadHandler::ReceiveContentLength(System.Int32)
-extern void DownloadHandler_ReceiveContentLength_m058DE0B56C3EBE8ECE3F9570852024EE2A84DE4F (void);
+extern void DownloadHandler_ReceiveContentLength_m7788739919D3BB09DBF3EEE1AE211C2701672316 (void);
 static Il2CppMethodPointer s_methodPointers[6] = 
 {
-	WebRequestUtils_RedirectTo_m63855E63B6B6EAFD4BCE65395BB744AAF5BD6AB4,
-	WebRequestUtils__cctor_m31ADEB75E00368144C8F223647D81A3B5ADD3D69,
-	CertificateHandler_ValidateCertificate_m81E194684391CA512FFC7C3A9172B56D6A1E2752,
-	CertificateHandler_ValidateCertificateNative_m73467B32D9B40F6897951F71F80CDDA92F5FD785,
-	DownloadHandler_ReceiveContentLengthHeader_m545073C4FB5AB9BB6640D24FC2F32070E5FE3F17,
-	DownloadHandler_ReceiveContentLength_m058DE0B56C3EBE8ECE3F9570852024EE2A84DE4F,
+	WebRequestUtils_RedirectTo_m302A7CAA44374907C165F4553CEA2309D689B189,
+	WebRequestUtils__cctor_mCE956748A8F3B1FA48893A7D263C466082815EEB,
+	CertificateHandler_ValidateCertificate_mE76D686A7A10A86799FBF1F107EF3544D4A9D815,
+	CertificateHandler_ValidateCertificateNative_m7AA7136975CEB1635B201B08BB9B04059E7D0D16,
+	DownloadHandler_ReceiveContentLengthHeader_mD3B607EDDF946896B9877C91DE1EDD6C39B16CF3,
+	DownloadHandler_ReceiveContentLength_m7788739919D3BB09DBF3EEE1AE211C2701672316,
 };
 static const int32_t s_InvokerIndices[6] = 
 {
-	3593,
-	4428,
-	1577,
-	1577,
-	1975,
-	1927,
+	4184,
+	4811,
+	1845,
+	1845,
+	2535,
+	2483,
 };
+extern const CustomAttributesCacheGenerator g_UnityEngine_UnityWebRequestModule_AttributeGenerators[];
 IL2CPP_EXTERN_C const Il2CppCodeGenModule g_UnityEngine_UnityWebRequestModule_CodeGenModule;
 const Il2CppCodeGenModule g_UnityEngine_UnityWebRequestModule_CodeGenModule = 
 {
@@ -58,6 +59,7 @@ const Il2CppCodeGenModule g_UnityEngine_UnityWebRequestModule_CodeGenModule =
 	0,
 	NULL,
 	NULL,
+	g_UnityEngine_UnityWebRequestModule_AttributeGenerators,
 	NULL, // module initializer,
 	NULL,
 	NULL,

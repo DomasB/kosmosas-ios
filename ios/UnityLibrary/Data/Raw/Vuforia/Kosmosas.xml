@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig>
+  <Tracking>
+    <ImageTarget name="Venera" size="0.600000 0.561473" />
+    <ImageTarget name="Saturnas" size="0.600000 0.645697" />
+    <ImageTarget name="Neptunas" size="0.600000 0.619400" />
+    <ImageTarget name="Marsas" size="0.600000 0.526808" />
+    <ImageTarget name="Jupiteris" size="0.600000 0.620444" />
+    <ImageTarget name="target_zemaitkiemis" size="2.000000 1.433790" />
+    <ImageTarget name="target_vu_observ_kiemas" size="20.000000 33.176334" />
+    <ImageTarget name="target_vepriai" size="1.000000 1.184801" />
+    <ImageTarget name="target_Valiulio_akmuo" size="3.000000 2.126033" />
+    <ImageTarget name="target_institutas_gostauto" size="1.000000 0.750000" />
+    <ImageTarget name="Target_institutas" size="20.000000 15.000000" />
+    <ImageTarget name="targetas_struve" size="2.000000 1.823183" />
+    <ImageTarget name="laikrodis_1" size="20.000000 15.000000" />
+    <ImageTarget name="Target_Kauno_fortas" size="2.000000 2.965221" />
+    <ImageTarget name="nano_avionics" size="50.000000 66.666664" />
+    <ImageTarget name="Target_ciurlionis" size="10.000000 7.500000" />
+    <ImageTarget name="Target_Andrioniskis" size="2.000000 2.666667" />
+    <ImageTarget name="Target_birutes" size="3000.000000 2978.000000" />
+  </Tracking>
+</QCARConfig>

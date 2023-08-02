@@ -22,7 +22,7 @@ extern bool _skipPresent;
     _surfaceSize = size;
 
     CGSize systemRenderSize = CGSizeMake(size.width * self.contentScaleFactor, size.height * self.contentScaleFactor);
-    _curOrientation = (ScreenOrientation)UnityReportResizeView((unsigned)systemRenderSize.width, (unsigned)systemRenderSize.height, _curOrientation);
+    _curOrientation = (ScreenOrientation)UnityReportResizeView(systemRenderSize.width, systemRenderSize.height, _curOrientation);
     ReportSafeAreaChangeForView(self);
 }
 
@@ -240,13 +240,44 @@ CGRect ComputeSafeArea(UIView* view)
     CGRect screenRect = CGRectMake(0, 0, screenSize.width, screenSize.height);
 
     UIEdgeInsets insets = [view safeAreaInsets];
+    float insetLeft = insets.left, insetBottom = insets.bottom;
+    float insetWidth = insetLeft + insets.right, insetHeight = insetBottom + insets.top;
 
-    screenRect.origin.x += insets.left;
-    screenRect.origin.y += insets.bottom; // Unity uses bottom left as the origin
-    screenRect.size.width -= insets.left + insets.right;
-    screenRect.size.height -= insets.top + insets.bottom;
+#if PLATFORM_IOS
+    // pre-iOS 15 there is a bug with safeAreaInsets when coupled with the way unity handles forced orientation
+    // when we create/show new ViewController with fixed orientation, safeAreaInsets include status bar always
+    // alas, we did not find a good way to work around that (this can be seen even in View Debugging: Safe Area would have status bar accounted for)
+    // we know for sure that status bar height is 20 (at least on ios16 or older), so we can check if the safe area
+    //   includes inset of this size while status bar should be hidden, resetting vertical insets in this case
+    if (@available(iOS 15, *))
+    {
+        // everything works as expected
+    }
+    else
+    {
+        bool isStatusBarHidden = false;
+    #if UNITY_HAS_IOSSDK_13_0
+        if (@available(iOS 13, *))
+        {
+            isStatusBarHidden = view.window.windowScene.statusBarManager.statusBarHidden;
+        }
+        else
+    #endif
+        {
+            isStatusBarHidden = [UIApplication sharedApplication].statusBarHidden;
+        }
 
-    float scale = view.contentScaleFactor;
+        if (isStatusBarHidden && fabsf(insetHeight - 20) < 1e-6f)
+            insetHeight = insetBottom = 0.0f;
+    }
+#endif
+
+    // Unity uses bottom left as the origin
+    screenRect = CGRectOffset(screenRect, insetLeft, insetBottom);
+    screenRect.size.width -= insetWidth;
+    screenRect.size.height -= insetHeight;
+
+    const float scale = view.contentScaleFactor;
 
     // Truncate safe area size because in some cases (for example when Display zoom is turned on)
     // it might become larger than Screen.width/height which are returned as ints.
@@ -254,6 +285,7 @@ CGRect ComputeSafeArea(UIView* view)
     screenRect.origin.y = (unsigned)(screenRect.origin.y * scale);
     screenRect.size.width = (unsigned)(screenRect.size.width * scale);
     screenRect.size.height = (unsigned)(screenRect.size.height * scale);
+
     return screenRect;
 }
 

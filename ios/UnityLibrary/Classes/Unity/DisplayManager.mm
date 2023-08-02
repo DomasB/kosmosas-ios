@@ -165,8 +165,8 @@ static DisplayManager* _DisplayManager = nil;
 
     surface->disableDepthAndStencil = params.disableDepthAndStencil;
 
-    surface->systemW = (unsigned)_screenSize.width;
-    surface->systemH = (unsigned)_screenSize.height;
+    surface->systemW = _screenSize.width;
+    surface->systemH = _screenSize.height;
 
     surface->targetW = params.renderW > 0 ? params.renderW : surface->systemW;
     surface->targetH = params.renderH > 0 ? params.renderH : surface->systemH;
@@ -647,4 +647,12 @@ extern "C" float UnityGetBrightness()
 #else
     return 1.0f;
 #endif
+}
+
+extern "C" bool UnityIsFullscreen()
+{
+    CGSize screenSize = [[[[DisplayManager Instance] mainDisplay] screen] bounds].size;
+    CGSize viewSize = [[[[DisplayManager Instance] mainDisplay] view] bounds].size;
+    
+    return screenSize.width == viewSize.width && screenSize.height == viewSize.height;
 }

@@ -1,5 +1,8 @@
+#include <sched.h>
+
+const CFIndex streamSize = 1024;
+static NSOperationQueue* webOperationQueue;
 static NSURLSession* unityWebRequestSession;
-static NSLock* unityWebRequestLock;
 
 @interface UnityURLRequest : NSMutableURLRequest
 
@@ -9,13 +12,14 @@ static NSLock* unityWebRequestLock;
 @property (readonly, nonatomic) long long receivedBytes;
 @property (readwrite, nonatomic) bool wantCertificateCallback;
 @property (readwrite, nonatomic) bool redirecting;
-@property (readonly) bool isDone;
+@property (readwrite) bool isDone;
 
 - (id)init:(void*)udata;
 
 @end
 
 static NSMutableArray<UnityURLRequest*>* currentRequests;
+static NSLock* currentRequestsLock;
 
 @implementation UnityURLRequest
 {
@@ -36,31 +40,77 @@ static NSMutableArray<UnityURLRequest*>* currentRequests;
 @synthesize redirecting = _redirecting;
 @synthesize isDone = _isDone;
 
++ (void)storeRequest:(UnityURLRequest *)request taskID:(NSUInteger)taskId
+{
+    request.taskIdentifier = taskId;
+    [currentRequestsLock lock];
+    [currentRequests addObject: request];
+    [currentRequestsLock unlock];
+}
+
 + (UnityURLRequest*)requestForTask:(NSURLSessionTask*)task
 {
     UnityURLRequest* request = nil;
-    [unityWebRequestLock lock];
+    [currentRequestsLock lock];
     for (unsigned i = 0; i < currentRequests.count; ++i)
         if (currentRequests[i].taskIdentifier == task.taskIdentifier)
         {
             request = currentRequests[i];
             break;
         }
-    [unityWebRequestLock unlock];
+    [currentRequestsLock unlock];
     return request;
 }
 
 + (void)removeRequest:(UnityURLRequest*)request
 {
     // removeObject would remove all identical request, taskIdentifier is unique
-    [unityWebRequestLock lock];
+    [currentRequestsLock lock];
     for (unsigned i = 0; i < currentRequests.count; ++i)
         if (currentRequests[i].taskIdentifier == request.taskIdentifier)
         {
             [currentRequests removeObjectAtIndex: i];
             break;
         }
-    [unityWebRequestLock unlock];
+    [currentRequestsLock unlock];
+}
+
++ (void)writeBody:(NSOutputStream*)outputStream task:(NSURLSessionTask*)task udata:(void*)udata
+{
+    unsigned dataSize = streamSize;
+    BOOL uploadComplete = FALSE;
+    while (!uploadComplete)
+    {
+        dataSize = streamSize;
+        const UInt8* data = (const UInt8*)UnityWebRequestGetUploadData(udata, &dataSize);
+        if (dataSize == 0)
+            break;
+
+        if (outputStream.hasSpaceAvailable)
+        {
+            NSInteger transmitted = [outputStream write: data maxLength: dataSize];
+            if (transmitted > 0)
+                UnityWebRequestConsumeUploadData(udata, (unsigned)transmitted);
+            else if (transmitted < 0)
+                break;
+        }
+        else
+        {
+            sched_yield();
+        }
+
+        switch (task.state)
+        {
+            case NSURLSessionTaskStateCanceling:
+            case NSURLSessionTaskStateCompleted:
+                uploadComplete = TRUE;
+                break;
+            default:
+                uploadComplete = FALSE;
+        }
+    }
+    [outputStream close];
+    UnityWebRequestRelease(udata);
 }
 
 - (id)init:(void*)udata
@@ -89,31 +139,10 @@ static NSMutableArray<UnityURLRequest*>* currentRequests;
         _estimatedContentLength = _receivedBytes;
 }
 
-- (void)markDone
-{
-    _isDone = true;
-}
-
 @end
 
 
 @interface UnityWebRequestDelegate : NSObject<NSURLSessionDataDelegate, NSURLSessionTaskDelegate>
-@end
-
-
-@interface UnityWebRequestUploadStream : NSInputStream
-
-+ (id)createForRequest:(void*)request totalBytes:(UInt64)totalBytes;
-- (NSStreamStatus)streamStatus;
-- (void)open;
-- (void)close;
-- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len;
-- (BOOL)getBuffer:(uint8_t * _Nullable *)buffer length:(NSUInteger *)len;
-- (BOOL)hasBytesAvailable;
-- (void)setDelegate:(id<NSStreamDelegate>)delegate;
-- (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode;
-- (void)removeFromRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode;
-
 @end
 
 
@@ -236,127 +265,18 @@ static NSMutableArray<UnityURLRequest*>* currentRequests;
         completionHandler(NSURLSessionAuthChallengePerformDefaultHandling, nil);
 }
 
-- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task needNewBodyStream:(void (^)(NSInputStream * _Nullable))completionHandler
-{
-    UnityURLRequest* urequest = [UnityURLRequest requestForTask: task];
-    UInt64 length = 0;
-    if (urequest != nil)
-        length = UnityWebRequestResetUpload(urequest.udata);
-    if (urequest == nil || length == 0)
-    {
-        [task cancel];
-        completionHandler(nil);
-        return;
-    }
-
-    NSInputStream* stream = [UnityWebRequestUploadStream createForRequest: urequest.udata totalBytes: length];
-    completionHandler(stream);
-}
-
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error
 {
     UnityURLRequest* urequest = [UnityURLRequest requestForTask: task];
     if (urequest == nil)
         return;
-    [urequest markDone];
+    urequest.isDone = true;
     if (urequest.redirecting)
         return;
     if (error != nil)
         UnityReportWebRequestNetworkError(urequest.udata, (int)[error code]);
     UnityReportWebRequestFinishedLoadingData(urequest.udata);
     UnityWebRequestRelease(urequest.udata);
-}
-
-- (void)URLSession:(NSURLSession *)session didBecomeInvalidWithError:(NSError *)error
-{
-    [unityWebRequestLock lock];
-    unityWebRequestSession = nil;
-    [unityWebRequestLock unlock];
-}
-
-@end
-
-
-@implementation UnityWebRequestUploadStream
-{
-    void* _request;
-    UInt64 _totalBytes;
-    NSStreamStatus _status;
-}
-
-+ (id)createForRequest:(void*)request totalBytes:(UInt64)totalBytes
-{
-    return [[UnityWebRequestUploadStream alloc] initWithRequest: request totalBytes: totalBytes];
-}
-
-- (id)initWithRequest:(void*)request totalBytes:(UInt64)totalBytes
-{
-    self = [self init];
-    _request = request;
-    _totalBytes = totalBytes;
-    _status = NSStreamStatusNotOpen;
-    return self;
-}
-
-- (NSStreamStatus)streamStatus
-{
-    return _status;
-}
-
-- (void)open
-{
-    _status = NSStreamStatusOpen;
-}
-
-- (void)close
-{
-    _status = NSStreamStatusClosed;
-}
-
-- (NSInteger)read:(uint8_t *)buffer maxLength:(NSUInteger)len
-{
-    unsigned dataSize = (unsigned)len;
-    const UInt8* data = (const UInt8*)UnityWebRequestGetUploadData(_request, &dataSize);
-    if (dataSize == 0)
-        return 0;
-    memcpy(buffer, data, dataSize);
-    UnityWebRequestConsumeUploadData(_request, dataSize);
-    _totalBytes -= dataSize;
-    if (_totalBytes == 0)
-        _status = NSStreamStatusAtEnd;
-    return dataSize;
-}
-
-- (BOOL)getBuffer:(uint8_t * _Nullable *)buffer length:(NSUInteger *)len
-{
-    return NO;
-}
-
-- (BOOL)hasBytesAvailable
-{
-    return _totalBytes > 0;
-}
-
-- (void)setDelegate:(id<NSStreamDelegate>)delegate
-{
-}
-
-- (void)scheduleInRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode
-{
-}
-
-- (void)removeFromRunLoop:(NSRunLoop *)aRunLoop forMode:(NSRunLoopMode)mode
-{
-}
-
-- (id)propertyForKey:(NSStreamPropertyKey)key
-{
-    return nil;
-}
-
-- (BOOL)setProperty:(id)property forKey:(NSStreamPropertyKey)key
-{
-    return NO;
 }
 
 @end
@@ -370,8 +290,16 @@ extern "C" void* UnityCreateWebRequestBackend(void* udata, const char* methodStr
         dispatch_once(&onceToken, ^{
             @autoreleasepool
             {
+                webOperationQueue = [[NSOperationQueue alloc] init];
+                webOperationQueue.name = @"com.unity3d.WebOperationQueue";
+                webOperationQueue.qualityOfService = NSQualityOfServiceUtility;
+
                 currentRequests = [[NSMutableArray<UnityURLRequest*> alloc] init];
-                unityWebRequestLock = [[NSLock alloc] init];
+                currentRequestsLock = [[NSLock alloc] init];
+
+                NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
+                UnityWebRequestDelegate* delegate = [[UnityWebRequestDelegate alloc] init];
+                unityWebRequestSession = [NSURLSession sessionWithConfiguration: config delegate: delegate delegateQueue: nil];
             }
         });
 
@@ -392,10 +320,11 @@ extern "C" void UnitySendWebRequest(void* connection, unsigned length, unsigned 
         request.timeoutInterval = timeoutSec;
         request.wantCertificateCallback = wantCertificateCallback;
 
+        NSOutputStream* outputStream = nil;
+        bool useStream = length > 16384;
         if (length > 0)
         {
-            bool useStream = (length > 16384);  // if less then 16K, do not use stream (too much memory pressure)
-            if (!useStream) // Use data
+            if (!useStream) // if less then 16K, do not use stream (too much memory pressure)
             {
                 unsigned dataSize = length;
                 const UInt8* data = (const UInt8*)UnityWebRequestGetUploadData(request.udata, &dataSize);
@@ -407,21 +336,23 @@ extern "C" void UnitySendWebRequest(void* connection, unsigned length, unsigned 
                     request.HTTPBody = [NSData dataWithBytes: data length: dataSize];
                 }
             }
-            if (useStream)
-                request.HTTPBodyStream = [UnityWebRequestUploadStream createForRequest: request.udata totalBytes: length];
-        }
-        [unityWebRequestLock lock];
-        if (unityWebRequestSession == nil)
-        {
-            NSURLSessionConfiguration* config = [NSURLSessionConfiguration defaultSessionConfiguration];
-            UnityWebRequestDelegate* delegate = [[UnityWebRequestDelegate alloc] init];
-            unityWebRequestSession = [NSURLSession sessionWithConfiguration: config delegate: delegate delegateQueue: nil];
+            if (useStream) // use stream if necessary
+            {
+                CFReadStreamRef readStream;
+                CFWriteStreamRef writeStream;
+                CFStreamCreateBoundPair(kCFAllocatorDefault, &readStream, &writeStream, streamSize);
+                CFWriteStreamOpen(writeStream);
+                outputStream = (__bridge_transfer NSOutputStream*)writeStream;
+                request.HTTPBodyStream = (__bridge_transfer NSInputStream*)readStream;
+            }
         }
         NSURLSessionTask* task = [unityWebRequestSession dataTaskWithRequest: request];
-        request.taskIdentifier = task.taskIdentifier;
-        [currentRequests addObject: request];
-        [unityWebRequestLock unlock];
+        [UnityURLRequest storeRequest: request taskID: task.taskIdentifier];
         [task resume];
+        if (useStream) // Write the stream if needed
+            [webOperationQueue addOperationWithBlock:^{
+                [UnityURLRequest writeBody: outputStream task: task udata: request.udata];
+            }];
     }
 }
 
@@ -448,7 +379,6 @@ extern "C" void UnityCancelWebRequest(void* connection)
     @autoreleasepool
     {
         UnityURLRequest* request = (__bridge UnityURLRequest*)connection;
-        [unityWebRequestLock lock];
         [unityWebRequestSession getAllTasksWithCompletionHandler:^(NSArray<NSURLSessionTask*>* _Nonnull tasks) {
             for (unsigned i = 0; i < tasks.count; ++i)
                 if (tasks[i].taskIdentifier == request.taskIdentifier)
@@ -457,7 +387,6 @@ extern "C" void UnityCancelWebRequest(void* connection)
                     break;
                 }
         }];
-        [unityWebRequestLock unlock];
     }
 }
 
@@ -486,13 +415,4 @@ extern "C" void UnityWebRequestClearCookieCache(const char* domain)
     NSUInteger cookieCount = [cookies count];
     for (int i = 0; i < cookieCount; ++i)
         [cookieStorage deleteCookie: cookies[i]];
-}
-
-extern "C" void UnityWebRequestCleanupSession()
-{
-    if (unityWebRequestLock == nil)
-        return;
-    [unityWebRequestLock lock];
-    [unityWebRequestSession invalidateAndCancel];
-    [unityWebRequestLock unlock];
 }

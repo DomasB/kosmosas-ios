@@ -4,6 +4,19 @@
 
 #include "RenderPluginDelegate.h"
 
+// Edited by https://github.com/juicycleff/flutter-unity-view-widget
+
+// Added by https://github.com/juicycleff/flutter-unity-view-widget
+typedef void(^unitySceneLoadedCallbackType)(const char* name, const int* buildIndex, const bool* isLoaded, const bool* IsValid);
+
+typedef void(^unityMessageCallbackType)(const char* message);
+
+// Added by https://github.com/juicycleff/flutter-unity-view-widget
+@protocol UnityEventListener <NSObject>
+- (void)onSceneLoaded:(NSString *)name buildIndex:(NSInteger *)bIndex loaded:(bool *)isLoaded valid:(bool *)IsValid;
+- (void)onMessage:(NSString *)message;
+@end
+
 @class UnityView;
 @class UnityViewControllerBase;
 @class DisplayConnection;

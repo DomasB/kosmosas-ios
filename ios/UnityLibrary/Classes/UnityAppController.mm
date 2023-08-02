@@ -33,6 +33,8 @@
 #include <unistd.h>
 #include <sys/sysctl.h>
 
+// Edited by https://github.com/juicycleff/flutter-unity-view-widget
+
 // we assume that app delegate is never changed and we can cache it, instead of re-query UIApplication every time
 UnityAppController* _UnityAppController = nil;
 UnityAppController* GetAppController()
@@ -44,7 +46,7 @@ UnityAppController* GetAppController()
 bool _ios81orNewer = false, _ios82orNewer = false, _ios83orNewer = false, _ios90orNewer = false, _ios91orNewer = false;
 bool _ios100orNewer = false, _ios101orNewer = false, _ios102orNewer = false, _ios103orNewer = false;
 bool _ios110orNewer = false, _ios111orNewer = false, _ios112orNewer = false;
-bool _ios130orNewer = false, _ios140orNewer = false;
+bool _ios130orNewer = false;
 
 // was unity rendering already inited: we should not touch rendering while this is false
 bool    _renderingInited        = false;
@@ -138,10 +140,7 @@ NSInteger _forceInterfaceOrientationMask = 0;
     {
         [audioSession setCategory: AVAudioSessionCategoryAmbient error: nil];
         [audioSession setActive: YES error: nil];
-    // Modified by https://github.com/juicycleff/flutter-unity-view-widget
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"UnityReady" object:self];
-}
-
+    }
     [audioSession addObserver: self forKeyPath: @"outputVolume" options: 0 context: nil];
     UnityUpdateMuteState([audioSession outputVolume] < 0.01f ? 1 : 0);
 
@@ -150,6 +149,8 @@ NSInteger _forceInterfaceOrientationMask = 0;
 
     InitUnityReplayKit();
 #endif
+    // Modified by https://github.com/juicycleff/flutter-unity-view-widget
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"UnityReady" object:self];
 }
 
 extern "C" void UnityDestroyDisplayLink()
@@ -221,17 +222,11 @@ extern "C" void UnityCleanupTrampoline()
 #endif
 
 #if !PLATFORM_TVOS
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-implementations"
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
     AppController_SendNotificationWithArg(kUnityDidReceiveLocalNotification, notification);
     UnitySendLocalNotification(notification);
 }
-
-#pragma clang diagnostic pop
 
 #endif
 
@@ -341,18 +336,11 @@ extern "C" void UnityCleanupTrampoline()
 
     // send notfications
 #if !PLATFORM_TVOS
-
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
     if (UILocalNotification* notification = [launchOptions objectForKey: UIApplicationLaunchOptionsLocalNotificationKey])
         UnitySendLocalNotification(notification);
 
     if ([UIDevice currentDevice].generatesDeviceOrientationNotifications == NO)
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-
-    #pragma clang diagnostic pop
-
 #endif
 
     UnityInitApplicationNoGraphics(UnityDataBundleDir());
@@ -549,6 +537,7 @@ extern "C" void UnityCleanupTrampoline()
     AppController_SendNotificationWithArg(kUnityHandleEventsForBackgroundURLSession, arg);
 }
 
+
 // Added by https://github.com/juicycleff/flutter-unity-view-widget
 extern "C" void OnUnityMessage(const char* message)
 {
@@ -563,7 +552,6 @@ extern "C" void OnUnitySceneLoaded(const char* name, const int* buildIndex, cons
         GetAppController().unitySceneLoadedHandler(name, buildIndex, isLoaded, IsValid);
     }
 }
-
 @end
 
 
@@ -648,11 +636,11 @@ void UnityInitTrampoline()
 
     NSString* version = [[UIDevice currentDevice] systemVersion];
 #define CHECK_VER(s) [version compare: s options: NSNumericSearch] != NSOrderedAscending
-    _ios81orNewer  = CHECK_VER(@"8.1");  _ios82orNewer  = CHECK_VER(@"8.2");  _ios83orNewer  = CHECK_VER(@"8.3");
-    _ios90orNewer  = CHECK_VER(@"9.0");  _ios91orNewer  = CHECK_VER(@"9.1");
-    _ios100orNewer = CHECK_VER(@"10.0"); _ios101orNewer = CHECK_VER(@"10.1"); _ios102orNewer = CHECK_VER(@"10.2"); _ios103orNewer = CHECK_VER(@"10.3");
-    _ios110orNewer = CHECK_VER(@"11.0"); _ios111orNewer = CHECK_VER(@"11.1"); _ios112orNewer = CHECK_VER(@"11.2");
-    _ios130orNewer  = CHECK_VER(@"13.0"); _ios140orNewer = CHECK_VER(@"14.0");
+    _ios81orNewer  = CHECK_VER(@"8.1"),  _ios82orNewer  = CHECK_VER(@"8.2"),  _ios83orNewer  = CHECK_VER(@"8.3");
+    _ios90orNewer  = CHECK_VER(@"9.0"),  _ios91orNewer  = CHECK_VER(@"9.1");
+    _ios100orNewer = CHECK_VER(@"10.0"), _ios101orNewer = CHECK_VER(@"10.1"), _ios102orNewer = CHECK_VER(@"10.2"), _ios103orNewer = CHECK_VER(@"10.3");
+    _ios110orNewer = CHECK_VER(@"11.0"), _ios111orNewer = CHECK_VER(@"11.1"), _ios112orNewer = CHECK_VER(@"11.2");
+    _ios130orNewer  = CHECK_VER(@"13.0");
 #undef CHECK_VER
 
     AddNewAPIImplIfNeeded();
@@ -676,7 +664,6 @@ extern "C" bool UnityiOS110orNewer() { return _ios110orNewer; }
 extern "C" bool UnityiOS111orNewer() { return _ios111orNewer; }
 extern "C" bool UnityiOS112orNewer() { return _ios112orNewer; }
 extern "C" bool UnityiOS130orNewer() { return _ios130orNewer; }
-extern "C" bool UnityiOS140orNewer() { return _ios140orNewer; }
 
 // sometimes apple adds new api with obvious fallback on older ios.
 // in that case we simply add these functions ourselves to simplify code
@@ -709,19 +696,6 @@ extern "C" int32_t __isOSVersionAtLeast(int32_t Major, int32_t Minor, int32_t Su
 extern "C" int32_t __isPlatformVersionAtLeast(uint32_t Platform, uint32_t Major, uint32_t Minor, uint32_t Subminor)
 {
     return __isOSVersionAtLeast(Major, Minor, Subminor);
-}
-
-#endif
-
-// starting with xcode 11.4 apple changed FD_SET and related macro to use weakly imported __darwin_check_fd_set_overflow
-// alas if we build xcode project with OLDER xcode this function is missing
-//   and we build unity lib with xcode11+, thus producing linker error
-// we mimic the logic of apple sdk itself (this part is open sourced):
-//   if __darwin_check_fd_set_overflow is not present the caller returns 1, so do we
-#ifndef __IPHONE_13_4
-extern "C" int __darwin_check_fd_set_overflow(int, const void *, int)
-{
-    return 1;
 }
 
 #endif

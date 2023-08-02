@@ -110,9 +110,9 @@
 
     #import <UIKit/UIKit.h>
 
-    #include "Configuration/UndefinePlatforms.h"
+    #include "External/baselib/builds/Include/PreExternalInclude.h"
     #include <mach-o/ldsyms.h>
-    #include "Configuration/RedefinePlatforms.h"
+    #include "External/baselib/builds/Include/PostExternalInclude.h"
 
     #include "DynamicLibEngineAPI-functions.h"
 

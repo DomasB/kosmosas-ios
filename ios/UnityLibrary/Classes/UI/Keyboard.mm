@@ -297,8 +297,8 @@ extern "C" void UnityKeyboard_LayoutChanged(NSString* layout);
     // mind you, all of that is highly empirical.
     // we assume space between items to be 18 [both betwen buttons and on the sides]
     // we also assume that button width would be more less title width exactly (it should be quite close though)
-    const int doneW   = (int)[doneStr sizeWithAttributes: @{NSFontAttributeName: font}].width;
-    const int cancelW = (int)[cancelStr sizeWithAttributes: @{NSFontAttributeName: font}].width;
+    const int doneW   = [doneStr sizeWithAttributes: @{NSFontAttributeName: font}].width;
+    const int cancelW = [cancelStr sizeWithAttributes: @{NSFontAttributeName: font}].width;
     singleLineSystemButtonsSpace = doneW + cancelW + 3 * 18;
 }
 

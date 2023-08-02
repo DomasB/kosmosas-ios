@@ -12,7 +12,6 @@ UnityExternCall(bool, UnityiOS110orNewer);
 UnityExternCall(bool, UnityiOS111orNewer);
 UnityExternCall(bool, UnityiOS112orNewer);
 UnityExternCall(bool, UnityiOS130orNewer);
-UnityExternCall(bool, UnityiOS140orNewer);
 
 // CrashReporter.mm
 UnityExternCall(void,     CrashedCheckBelowForHintsWhy);
@@ -146,7 +145,7 @@ UnityExternCall(void,             UnityDestroyUnityRenderSurfaces);
 UnityExternCall(int,              UnityMainScreenRefreshRate);
 UnityExternCall(void,             UnitySetBrightness, float);
 UnityExternCall(float,            UnityGetBrightness);
-
+UnityExternCall(bool,             UnityIsFullscreen);
 
 #if SUPPORT_MULTIPLE_DISPLAYS || PLATFORM_IOS
 UnityExternCall(int,              UnityDisplayManager_DisplayCount);
@@ -174,7 +173,6 @@ UnityExternCall(void*,            UnityCreateWebRequestBackend, void*, const cha
 UnityExternCall(void,             UnitySendWebRequest, void*, unsigned, unsigned long, bool);
 UnityExternCall(void,             UnityDestroyWebRequestBackend, void*);
 UnityExternCall(void,             UnityCancelWebRequest, const void*);
-UnityExternCall(void,             UnityWebRequestCleanupSession);
 UnityExternCall(bool,             UnityWebRequestIsDone, void*);
 UnityExternCall(void,             UnityWebRequestClearCookieCache, const char*);
 

@@ -73,8 +73,11 @@ extern "C" int UnityGetIosAppOnMac()
 #if (PLATFORM_IOS && defined(__IPHONE_14_0)) || (PLATFORM_TVOS && defined(__TVOS_14_0))
     if (@available(iOS 14, tvOS 14, *))
         return [[NSProcessInfo processInfo] isiOSAppOnMac] ? 1 : 0;
-#endif
+    else
+        return 0;
+#else
     return 0;
+#endif
 }
 
 extern "C" int UnityAdTrackingEnabled()
@@ -285,10 +288,15 @@ DeviceTableEntry DeviceTable[] =
     { iPad, 11, 6, 7, deviceiPad8Gen },
     { iPad, 13, 1, 2, deviceiPadAir4Gen },
     { iPad, 13, 16, 17, deviceiPadAir5Gen },
+    { iPad, 14, 5, 6, deviceiPadPro6Gen },
+    { iPad, 14, 3, 4, deviceiPadPro11Inch4Gen },
+    { iPad, 13, 18, 19, deviceiPad10Gen },
+
 
     { AppleTV, 5, 3, 3, deviceAppleTVHD },
     { AppleTV, 6, 2, 2, deviceAppleTV4K },
-    { AppleTV, 11, 1, 1, deviceAppleTV4K2Gen }
+    { AppleTV, 11, 1, 1, deviceAppleTV4K2Gen },
+    { AppleTV, 14, 1, 1, deviceAppleTV4K3Gen },
 };
 
 extern "C" int ParseDeviceGeneration(const char* model)
@@ -504,6 +512,9 @@ extern "C" float UnityDeviceDPI()
             case deviceiPhoneUnknown:
                 _DeviceDPI = 326.0f; break;
             case deviceiPadUnknown:
+            case deviceiPadPro6Gen:
+            case deviceiPadPro11Inch4Gen:
+            case deviceiPad10Gen:
                 _DeviceDPI = 264.0f; break;
             case deviceiPodTouchUnknown:
                 _DeviceDPI = 326.0f; break;

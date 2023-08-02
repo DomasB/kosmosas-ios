@@ -167,7 +167,7 @@ extern "C" void CreateRenderingSurfaceMTL(UnityDisplaySurfaceMTL* surface)
             txDesc.arrayLength = 1;
             txDesc.mipmapLevelCount = 1;
 #if PLATFORM_OSX
-            txDesc.resourceOptions = MTLResourceStorageModeManaged;
+            txDesc.resourceOptions = MTLResourceCPUCacheModeDefaultCache | MTLResourceStorageModeManaged;
 #endif
             txDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
             surface->targetColorRT = [surface->device newTextureWithDescriptor: txDesc];
