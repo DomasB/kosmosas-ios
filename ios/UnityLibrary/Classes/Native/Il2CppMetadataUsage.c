@@ -1,4 +1,4 @@
-#include "pch-c.h"
+﻿#include "pch-c.h"
 #ifndef _MSC_VER
 # include <alloca.h>
 #else
