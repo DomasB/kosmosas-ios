@@ -332,6 +332,7 @@ IL2CPP_EXTERN_C RuntimeClass* U3CU3Ef__AnonymousType0_4_tBCC04185AED1C1C2CFAD994
 IL2CPP_EXTERN_C RuntimeClass* U3CU3Ef__AnonymousType0_4_tDE5000E5AA6D2F551A599D76967B42844AC60EE5_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* UnityAction_2_tDEF0DD47461C853F98CD2FF3CEC4F5EE13A19906_il2cpp_TypeInfo_var;
 IL2CPP_EXTERN_C RuntimeClass* UnityMessageManager_t28A3776C9030A853A7A13EE12BB690E9760F88A0_il2cpp_TypeInfo_var;
+IL2CPP_EXTERN_C String_t* _stringLiteral218F5A08519088A96BE3C1074984C53EA49F1CCA;
 IL2CPP_EXTERN_C String_t* _stringLiteral24C049E512CD1B48036BD162FF63700A57CA3469;
 IL2CPP_EXTERN_C String_t* _stringLiteral2AD47C03F7A83F82E3B2ADFE8A60F1727FD3BEFD;
 IL2CPP_EXTERN_C String_t* _stringLiteral2D7BBE69848ACE22B59D39BEC7ADC4F842AED11D;
@@ -7062,13 +7063,14 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void VideoLoader_Start_m060037882576D5E2AC663
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD_il2cpp_TypeInfo_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&Path_tF1D95B78D57C1C1211BA6633FF2AC22FD6C48921_il2cpp_TypeInfo_var);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&VideoLoader_EndReached_m42BF30AD79CE7D2A1FB5C4EE022F804CD3D70E6C_RuntimeMethod_var);
+		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral218F5A08519088A96BE3C1074984C53EA49F1CCA);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral3CC467A802D81D30CFCC13435F3C9EF52A777208);
 		il2cpp_codegen_initialize_runtime_metadata((uintptr_t*)&_stringLiteral5B7D9A990938B2018187DFD0AC17A9784E029FD5);
 		s_Il2CppMethodInitialized = true;
 	}
 	String_t* V_0 = NULL;
 	{
-		// string videoUrl = System.IO.Path.Combine(Application.streamingAssetsPath, "/Video/" + gameObject.transform.parent.parent.parent.name + ".mp4");
+		// string videoUrl = "file://" + System.IO.Path.Combine(Application.streamingAssetsPath, "/Video/" + gameObject.transform.parent.parent.parent.name + ".mp4");
 		String_t* L_0;
 		L_0 = Application_get_streamingAssetsPath_mBA7560B393A50853AE3C28C096A03849B8627A4A(/*hidden argument*/NULL);
 		GameObject_tC000A2E1A7CF1E10FD7BA08863287C072207C319 * L_1;
@@ -7093,18 +7095,20 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void VideoLoader_Start_m060037882576D5E2AC663
 		IL2CPP_RUNTIME_CLASS_INIT(Path_tF1D95B78D57C1C1211BA6633FF2AC22FD6C48921_il2cpp_TypeInfo_var);
 		String_t* L_8;
 		L_8 = Path_Combine_mBAC6F82953008479983594F7F95101F46310C32D(L_0, L_7, /*hidden argument*/NULL);
-		V_0 = L_8;
+		String_t* L_9;
+		L_9 = String_Concat_m10758B01687A2181C8727AD9FD9CCF5325C61C2A(_stringLiteral218F5A08519088A96BE3C1074984C53EA49F1CCA, L_8, /*hidden argument*/NULL);
+		V_0 = L_9;
 		// videoPlayer.loopPointReached += EndReached;
-		VideoPlayer_t47DCC396CBA28512CF97C6CC4F55878E8D62FE86 * L_9 = __this->get_videoPlayer_4();
-		EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD * L_10 = (EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD *)il2cpp_codegen_object_new(EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD_il2cpp_TypeInfo_var);
-		EventHandler__ctor_mA1A6722C36644D8F49E5A5008B68352561E03400(L_10, __this, (intptr_t)((intptr_t)VideoLoader_EndReached_m42BF30AD79CE7D2A1FB5C4EE022F804CD3D70E6C_RuntimeMethod_var), /*hidden argument*/NULL);
-		NullCheck(L_9);
-		VideoPlayer_add_loopPointReached_m01BBFFE55835498DFF2A1C8CEF3292B4780E4964(L_9, L_10, /*hidden argument*/NULL);
+		VideoPlayer_t47DCC396CBA28512CF97C6CC4F55878E8D62FE86 * L_10 = __this->get_videoPlayer_4();
+		EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD * L_11 = (EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD *)il2cpp_codegen_object_new(EventHandler_t99288A74FAB288C0033E28A5CD3DABE77B109BFD_il2cpp_TypeInfo_var);
+		EventHandler__ctor_mA1A6722C36644D8F49E5A5008B68352561E03400(L_11, __this, (intptr_t)((intptr_t)VideoLoader_EndReached_m42BF30AD79CE7D2A1FB5C4EE022F804CD3D70E6C_RuntimeMethod_var), /*hidden argument*/NULL);
+		NullCheck(L_10);
+		VideoPlayer_add_loopPointReached_m01BBFFE55835498DFF2A1C8CEF3292B4780E4964(L_10, L_11, /*hidden argument*/NULL);
 		// videoPlayer.url = videoUrl;
-		VideoPlayer_t47DCC396CBA28512CF97C6CC4F55878E8D62FE86 * L_11 = __this->get_videoPlayer_4();
-		String_t* L_12 = V_0;
-		NullCheck(L_11);
-		VideoPlayer_set_url_m9C9942D6C54D50F6255A2AA1646D9F40E551BF13(L_11, L_12, /*hidden argument*/NULL);
+		VideoPlayer_t47DCC396CBA28512CF97C6CC4F55878E8D62FE86 * L_12 = __this->get_videoPlayer_4();
+		String_t* L_13 = V_0;
+		NullCheck(L_12);
+		VideoPlayer_set_url_m9C9942D6C54D50F6255A2AA1646D9F40E551BF13(L_12, L_13, /*hidden argument*/NULL);
 		// }
 		return;
 	}
